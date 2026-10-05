@@ -126,7 +126,7 @@ const AVATARS = ['🦊','🐼','🐯','🐸','🦄','🐙','🐨','🦁','🐧',
 const COLORS = ['#ffd25e','#7fdcb5','#8fd3f0','#ff9fb2','#c9b6ff','#ffb878'];
 const COURSES = ['1º Primaria','2º Primaria','3º Primaria','4º Primaria','5º Primaria','6º Primaria','1º ESO','2º ESO','3º ESO','4º ESO','Bachillerato'];
 const PASS = 16;
-const MAXP = 15;   // páginas por tema
+const MAXP = 12;   // páginas por tema
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -310,7 +310,8 @@ async function addFiles(files){
   list.sort((a,b) => a.name.localeCompare(b.name, 'es', {numeric:true}));
   for(const f of list){
     if(S.photos.length >= MAXP){ toast(`Máximo ${MAXP} páginas por tema`); break }
-    S.photos.push(await shrink(f));
+    try{ S.photos.push(await shrink(f)) }
+    catch(e){ toast(`No se pudo leer "${f.name}". Usa fotos JPG o PNG.`, 5000) }
   }
   drawThumbs();
 }
@@ -331,6 +332,24 @@ function shrink(file, max=1400){
   });
 }
 
+/* Comprime las fotos hasta que el envío total sea pequeño (máx ~4 MB) */
+function reencode(dataUrl, max, q){
+  return new Promise(res => { const img = new Image(); img.onload = () => {
+    const k = Math.min(1, max / Math.max(img.width, img.height));
+    const c = document.createElement('canvas'); c.width = Math.round(img.width*k); c.height = Math.round(img.height*k);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); res(c.toDataURL('image/jpeg', q)) }; img.src = dataUrl });
+}
+async function fitPayload(photos){
+  const LIMIT = 4.0e6; let max = 1400, q = .8;
+  let total = photos.reduce((t,p)=>t+p.length, 0);
+  while(total > LIMIT && max > 700){
+    max -= 200; q = Math.max(.6, q - .05);
+    photos = await Promise.all(photos.map(p => reencode(p, max, q)));
+    total = photos.reduce((t,p)=>t+p.length, 0);
+  }
+  return photos;
+}
+
 /* ---------- IA (Gemini) ---------- */
 function prompt(course, subj){
   return `Eres un profesor muy cariñoso y claro. Te paso fotos de páginas de un libro de texto de un alumno de ${course}${subj?` (asignatura: ${subj})`:''}.
@@ -345,14 +364,16 @@ Si alguna foto no se lee bien, usa lo que sí se lea.`;
 }
 async function analyze(){
   const course = $('#crs').value, subj = $('#subj').value.trim();
-  const photos = S.photos.slice();
+  const photos = await fitPayload(S.photos.slice());
   $('#app').innerHTML = `<div class="card loading"><div class="spin">${owl(160)}</div><h2>Leyendo tu libro…</h2><p class="muted">El búho está preparando el resumen y las 20 preguntas. Tarda entre 20 y 60 segundos.</p></div>`;
   try{
     const { data: out, error } = await sb.functions.invoke('analizar', { body: { prompt: prompt(course, subj), images: photos.map(d => d.split(',')[1]) } });
     if(error){
-      let msg = error.message;
+      let msg = error.message, st = error.context?.status;
       try{ const j = await error.context.json(); msg = j.error || msg }catch(e){}
-      throw new Error(msg);
+      if(st === 413 || /fetch|network|send a request/i.test(msg)) msg = 'Las fotos pesan demasiado o se cortó la conexión. Prueba con menos páginas (por ejemplo 5) o vuelve a intentarlo.';
+      else if(st === 546 || st === 504) msg = 'El servidor tardó demasiado. Prueba con menos páginas a la vez.';
+      throw new Error(msg + (st ? ` (código ${st})` : ''));
     }
     if(out?.error) throw new Error(out.error);
     if(!out.preguntas?.length) throw new Error('No se pudieron crear preguntas. Prueba con fotos más claras.');

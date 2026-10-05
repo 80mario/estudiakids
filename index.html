@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EstudiaKids</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800;900&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f3d47; --ink2:#2d5a63; --muted:#5f7b81;
+  --yellow:#ffd25e; --yellow2:#f6c13d; --sky:#8fd3f0; --mint:#7fdcb5; --pink:#ff9fb2;
+  --bg:#f3f6f4; --card:#ffffff; --ok:#1fa36b; --bad:#e2574c;
+  --r:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Nunito,system-ui,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;
+  background-image:radial-gradient(600px 400px at 0% 0%,#fff3c9 0,transparent 60%),radial-gradient(500px 400px at 100% 20%,#d7f5ea 0,transparent 60%),radial-gradient(600px 500px at 90% 100%,#dcefff 0,transparent 60%);}
+h1,h2,h3,.brand,.btn{font-family:Outfit,system-ui,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:20px 16px 60px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:24px;cursor:pointer}
+.brand .logo{width:42px;height:42px;border-radius:12px;background:var(--yellow);border:3px solid var(--ink);display:grid;place-items:center;box-shadow:3px 3px 0 var(--ink)}
+.brand small{display:block;font-size:11px;letter-spacing:.18em;color:var(--muted);font-weight:700}
+.card{background:var(--card);border:3px solid var(--ink);border-radius:var(--r);box-shadow:5px 5px 0 var(--ink);padding:22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:3px solid var(--ink);border-radius:14px;padding:12px 20px;font-weight:800;font-size:16px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:transform .08s, box-shadow .08s}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn.y{background:var(--yellow)} .btn.m{background:var(--mint)} .btn.s{background:var(--sky)}
+.btn.sm{padding:7px 12px;font-size:14px;border-radius:11px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid{display:grid;gap:18px}
+@media(min-width:760px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}}
+.hero{display:grid;gap:24px;align-items:center}
+@media(min-width:800px){.hero{grid-template-columns:1.2fr 1fr}}
+.pill{display:inline-flex;gap:6px;align-items:center;border:2px solid var(--ink);border-radius:999px;padding:5px 12px;font-weight:800;font-size:12px;letter-spacing:.06em;background:#fff}
+.big{font-family:Outfit,system-ui,sans-serif;font-weight:900;font-size:clamp(34px,6vw,58px);line-height:1;margin:14px 0}
+.big .hl{background:var(--yellow);border:3px solid var(--ink);border-radius:14px;padding:0 12px;display:inline-block;box-shadow:4px 4px 0 var(--ink);margin-top:8px}
+.muted{color:var(--muted)}
+.owlbox{background:var(--sky);border:3px solid var(--ink);border-radius:24px;box-shadow:6px 6px 0 var(--ink);padding:16px;position:relative;display:grid;place-items:center;min-height:300px}
+.badge{position:absolute;background:#fff;border:3px solid var(--ink);border-radius:12px;padding:6px 10px;font-family:Outfit,system-ui,sans-serif;font-weight:900;box-shadow:3px 3px 0 var(--ink)}
+.prof{text-align:center;cursor:pointer;padding:16px}
+.prof .av{font-size:44px;width:76px;height:76px;margin:0 auto 8px;border-radius:50%;border:3px solid var(--ink);display:grid;place-items:center}
+.prof:hover{transform:translate(-2px,-2px)}
+input[type=text],input[type=password],select,textarea{width:100%;font:inherit;font-weight:700;color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:11px 12px;background:#fff}
+label.lb{display:block;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin:12px 0 6px}
+.drop{border:3px dashed var(--ink2);border-radius:16px;padding:28px;text-align:center;background:#fffbea;cursor:pointer}
+.drop.over{background:#fff1b8}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumbs div{position:relative}
+.thumbs img{width:96px;height:120px;object-fit:cover;border:3px solid var(--ink);border-radius:10px}
+.thumbs button{position:absolute;top:-8px;right:-8px;border:2px solid var(--ink);background:#fff;border-radius:50%;width:26px;height:26px;cursor:pointer;font-weight:900}
+.opt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;border:3px solid var(--ink);border-radius:14px;padding:14px;background:#fff;font:inherit;font-weight:700;font-size:17px;color:var(--ink);cursor:pointer;margin-bottom:10px;box-shadow:3px 3px 0 var(--ink)}
+.opt .k{flex:none;width:34px;height:34px;border-radius:10px;border:3px solid var(--ink);display:grid;place-items:center;font-family:Outfit,system-ui,sans-serif;font-weight:900;background:var(--yellow)}
+.opt.sel{background:#fff6d4}
+.opt.ok{background:#d6f5e6;border-color:var(--ok)} .opt.bad{background:#fde0dd;border-color:var(--bad)}
+.bar{height:14px;border:3px solid var(--ink);border-radius:999px;background:#fff;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--mint)}
+.dots{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.dots span{width:26px;height:26px;border-radius:8px;border:2px solid var(--ink);display:grid;place-items:center;font-size:12px;font-weight:800;background:#fff;cursor:pointer}
+.dots span.a{background:var(--yellow)} .dots span.cur{outline:3px solid var(--sky)}
+.dots span.ok{background:#bdeed6} .dots span.bad{background:#f8c6c0}
+.score{font-family:Outfit,system-ui,sans-serif;font-weight:900;font-size:80px;line-height:1}
+.list li{margin:6px 0}
+.vocab{display:grid;gap:10px}
+.vocab div{border:2px solid var(--ink);border-radius:12px;padding:10px 12px;background:#f7fbff}
+.hist{display:flex;justify-content:space-between;gap:10px;align-items:center;border:2px solid var(--ink);border-radius:12px;padding:10px 14px;background:#fff;margin-bottom:10px}
+.tag{border:2px solid var(--ink);border-radius:999px;padding:2px 10px;font-weight:800;font-size:13px}
+.tag.ok{background:#bdeed6} .tag.bad{background:#f8c6c0}
+.loading{text-align:center;padding:40px 10px}
+.spin{animation:bob 1s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px) rotate(-4deg)}}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;z-index:9;max-width:90vw}
+.hide{display:none!important}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:8}
+a{color:#0b7bb3;font-weight:800}
+.step{display:flex;gap:12px;align-items:flex-start;margin:10px 0}
+.step b.n{flex:none;width:30px;height:30px;border-radius:50%;background:var(--yellow);border:2px solid var(--ink);display:grid;place-items:center;font-family:Outfit}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand" onclick="go('home')">
+      <div class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0f3d47" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2z"/><path d="M22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg></div>
+      <div>EstudiaKids<small>APRENDE · ESTUDIA · APRUEBA</small></div>
+    </div>
+    <div class="row">
+      <span id="whoBadge" class="pill hide"></span>
+      <button class="btn sm hide" id="setBtn" onclick="go('settings')" title="Ajustes">⚙️ Cuenta</button>
+    </div>
+  </header>
+  <main id="app"></main>
+</div>
+<canvas class="confetti" id="confetti"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+// Datos públicos de tu proyecto de Supabase (Project Settings → API).
+// La "anon key" es pública por diseño: la seguridad la ponen las reglas de la base de datos.
+window.EK_CONFIG = {
+  SUPABASE_URL: 'https://iweksgjjmrtrjslgsxbg.supabase.co',
+  SUPABASE_ANON_KEY: 'sb_publishable_2LaMRzrETWeZyncrT5k5jw_bcv8zsvY'
+};
+</script>
+
+<script>
+/* ============ Datos ============ */
+const LS = {
+  get(k, d){ try{ const v = localStorage.getItem('ek_'+k); return v ? JSON.parse(v) : d }catch(e){ return d } },
+  set(k, v){ try{ localStorage.setItem('ek_'+k, JSON.stringify(v)) }catch(e){ toast('No se pudo guardar (memoria del navegador llena o bloqueada)') } }
+};
+const sb = supabase.createClient(EK_CONFIG.SUPABASE_URL, EK_CONFIG.SUPABASE_ANON_KEY);
+const USER_DOMAIN = '@estudiakids.app';   // el "usuario" se guarda como correo interno
+let S = {
+  user: null,          // sesión de Supabase
+  profiles: [],
+  current: LS.get('current', null),
+  photos: [],          // dataURLs para el estudio nuevo
+  lesson: null,        // lección abierta
+  test: null           // {answers:[], i, done}
+};
+const AVATARS = ['🦊','🐼','🐯','🐸','🦄','🐙','🐨','🦁','🐧','🐶','🐱','🐵'];
+const COLORS = ['#ffd25e','#7fdcb5','#8fd3f0','#ff9fb2','#c9b6ff','#ffb878'];
+const COURSES = ['1º Primaria','2º Primaria','3º Primaria','4º Primaria','5º Primaria','6º Primaria','1º ESO','2º ESO','3º ESO','4º ESO','Bachillerato'];
+const PASS = 16;
+const MAXP = 15;   // páginas por tema
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(t, ms=3500){ const d=document.createElement('div'); d.className='toast'; d.textContent=t; document.body.appendChild(d); setTimeout(()=>d.remove(), ms) }
+function me(){ return S.profiles.find(p => p.id === S.current) }
+let saveTimer = null;
+function saveProfiles(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    const { error } = await sb.from('ek_datos').upsert({ user_id: S.user.id, datos: { profiles: S.profiles }, updated_at: new Date().toISOString() });
+    if(error) toast('⚠️ No se pudo guardar en la nube: ' + error.message, 6000);
+  }, 400);
+}
+async function loadData(){
+  const { data, error } = await sb.from('ek_datos').select('datos').eq('user_id', S.user.id).maybeSingle();
+  if(error) toast('⚠️ No se pudieron cargar tus datos: ' + error.message, 6000);
+  S.profiles = data?.datos?.profiles || [];
+}
+function userName(){ return (S.user?.email || '').replace(USER_DOMAIN, '') }
+
+/* ============ Búho (dibujo propio) ============ */
+function owl(size=220, mood='happy'){
+  const eye = mood==='sad'
+    ? '<path d="M78 92q12-8 24 0M138 92q12-8 24 0" stroke="#0f3d47" stroke-width="5" fill="none" stroke-linecap="round"/>'
+    : '<circle cx="90" cy="92" r="11" fill="#0f3d47"/><circle cx="150" cy="92" r="11" fill="#0f3d47"/><circle cx="94" cy="88" r="4" fill="#fff"/><circle cx="154" cy="88" r="4" fill="#fff"/>';
+  return `<svg width="${size}" height="${size}" viewBox="0 0 240 240" aria-hidden="true">
+  <ellipse cx="120" cy="226" rx="70" ry="9" fill="#0f3d47" opacity=".15"/>
+  <path d="M60 70 L52 30 L88 52 Z" fill="#f6c13d" stroke="#0f3d47" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M180 70 L188 30 L152 52 Z" fill="#f6c13d" stroke="#0f3d47" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M40 120 Q40 50 120 46 Q200 50 200 120 L200 170 Q200 218 120 218 Q40 218 40 170 Z" fill="#ffd25e" stroke="#0f3d47" stroke-width="6"/>
+  <path d="M78 150 Q120 128 162 150 L162 186 Q120 212 78 186 Z" fill="#fff7e0" stroke="#0f3d47" stroke-width="4"/>
+  <path d="M96 166q8 6 16 0M128 166q8 6 16 0M112 184q8 6 16 0" stroke="#e8b43a" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M40 130 Q18 150 30 182 Q46 170 50 150Z" fill="#8fd3f0" stroke="#0f3d47" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M200 130 Q222 150 210 182 Q194 170 190 150Z" fill="#8fd3f0" stroke="#0f3d47" stroke-width="5" stroke-linejoin="round"/>
+  <circle cx="90" cy="92" r="26" fill="#fff" stroke="#0f3d47" stroke-width="5"/>
+  <circle cx="150" cy="92" r="26" fill="#fff" stroke="#0f3d47" stroke-width="5"/>
+  ${eye}
+  <path d="M110 112 L130 112 L120 128 Z" fill="#ff9a3d" stroke="#0f3d47" stroke-width="4" stroke-linejoin="round"/>
+  ${mood==='happy'?'<circle cx="68" cy="122" r="7" fill="#ff9fb2" opacity=".8"/><circle cx="172" cy="122" r="7" fill="#ff9fb2" opacity=".8"/>':''}
+  <path d="M60 64 Q120 30 180 64 L174 74 Q120 46 66 74Z" fill="#0f3d47"/>
+  <rect x="104" y="40" width="32" height="12" rx="3" fill="#0f3d47"/>
+  </svg>`;
+}
+
+/* ============ Navegación ============ */
+function go(view, arg){
+  window.scrollTo(0,0);
+  if(!S.user && view !== 'auth') view = 'auth';
+  $('#setBtn').classList.toggle('hide', !S.user);
+  const who = me(); const b = $('#whoBadge');
+  if(who){ b.classList.remove('hide'); b.innerHTML = `${who.avatar} ${esc(who.name)}`; b.style.background = who.color; b.style.cursor='pointer'; b.onclick = () => go('profiles') }
+  else b.classList.add('hide');
+  const views = {auth, home, profiles, newStudy, lesson, test, result, settings, history};
+  (views[view] || home)(arg);
+}
+
+/* ---------- Inicio ---------- */
+function home(){
+  const who = me();
+  $('#app').innerHTML = `
+  <section class="hero">
+    <div>
+      <span class="pill">✨ CON SÚPER PODERES DE IA</span>
+      <div class="big">Estudia mejor.<br><span class="hl">Aprueba siempre.</span></div>
+      <p style="font-size:18px">Haz una foto a tu libro y te preparamos un <b>resumen fácil</b> y un <b>test tipo autoescuela de 20 preguntas</b> con opciones A, B y C. ¡Apruebas con <b>${PASS}/20</b>!</p>
+      <div class="row" style="margin-top:18px">
+        ${who
+          ? `<button class="btn y" onclick="go('newStudy')">📸 Estudiar un tema nuevo</button>
+             <button class="btn" onclick="go('history')">📚 Mis temas</button>`
+          : `<button class="btn y" onclick="go('profiles')">Empezar →</button>`}
+        <button class="btn s" onclick="openDemo()">🎲 Probar un ejemplo</button>
+      </div>
+    </div>
+    <div class="owlbox">
+      <div class="badge" style="top:16px;left:16px">¡APRUEBAS!<br><span style="font-size:26px">16/20</span></div>
+      <div class="badge" style="bottom:16px;right:16px;font-size:12px">SÚPER RÁPIDO<br><span style="font-size:16px">IA Gemini</span></div>
+      ${owl(250)}
+    </div>
+  </section>
+  <h2 style="margin-top:40px">¿Cómo funciona?</h2>
+  <div class="grid g3">
+    ${[['📸','Haz una foto','Del tema del libro o de tus apuntes. Puedes subir varias páginas.'],
+       ['🧠','Lee el resumen','Ideas clave y palabras difíciles explicadas a tu nivel.'],
+       ['✅','Haz el test','20 preguntas A/B/C. Si sacas 16 o más… ¡aprobado!']]
+      .map(([e,t,d])=>`<div class="card"><div style="font-size:36px">${e}</div><h3 style="margin:8px 0">${t}</h3><div class="muted">${d}</div></div>`).join('')}
+  </div>`;
+}
+
+/* ---------- Perfiles ---------- */
+function profiles(){
+  $('#app').innerHTML = `
+  <div class="card">
+    <h2 style="margin-top:0">¿Quién va a estudiar hoy?</h2>
+    <div class="grid g3" id="plist">
+      ${S.profiles.map(p=>`
+        <div class="card prof" onclick="pickProfile('${p.id}')">
+          <div class="av" style="background:${p.color}">${p.avatar}</div>
+          <h3 style="margin:4px 0">${esc(p.name)}</h3>
+          <div class="muted">${esc(p.course)} · ${(p.lessons||[]).length} temas</div>
+          <button class="btn sm" style="margin-top:10px" onclick="event.stopPropagation();delProfile('${p.id}')">🗑️</button>
+        </div>`).join('')}
+      <div class="card prof" onclick="$('#newp').classList.remove('hide')" style="background:#fffbea">
+        <div class="av" style="background:#fff">➕</div><h3 style="margin:4px 0">Nuevo perfil</h3><div class="muted">Para cada niño o niña</div>
+      </div>
+    </div>
+    <div id="newp" class="${S.profiles.length?'hide':''}" style="margin-top:22px">
+      <h3>Nuevo perfil</h3>
+      <div class="grid g2">
+        <div><label class="lb">Nombre</label><input type="text" id="pn" placeholder="Ej: Hannah" maxlength="20"></div>
+        <div><label class="lb">Curso</label><select id="pc">${COURSES.map(c=>`<option>${c}</option>`).join('')}</select></div>
+      </div>
+      <label class="lb">Elige un animal</label>
+      <div class="row" id="pav">${AVATARS.map((a,i)=>`<button class="btn sm ${i?'':'y'}" data-a="${a}" onclick="selAv(this)" style="font-size:24px">${a}</button>`).join('')}</div>
+      <div style="margin-top:16px"><button class="btn y" onclick="addProfile()">Crear perfil</button></div>
+    </div>
+  </div>`;
+}
+function selAv(b){ document.querySelectorAll('#pav .btn').forEach(x=>x.classList.remove('y')); b.classList.add('y') }
+function addProfile(){
+  const name = $('#pn').value.trim(); if(!name) return toast('Escribe un nombre');
+  const avatar = $('#pav .btn.y').dataset.a;
+  const p = {id: 'p'+Date.now(), name, course: $('#pc').value, avatar, color: COLORS[S.profiles.length % COLORS.length], lessons: []};
+  S.profiles.push(p); saveProfiles(); pickProfile(p.id);
+}
+function pickProfile(id){ S.current = id; LS.set('current', id); go('home') }
+function delProfile(id){
+  const p = S.profiles.find(x=>x.id===id);
+  if(!confirm(`¿Borrar el perfil de ${p.name} y todos sus temas?`)) return;
+  S.profiles = S.profiles.filter(x=>x.id!==id); saveProfiles();
+  if(S.current===id){ S.current=null; LS.set('current', null) }
+  go('profiles');
+}
+
+/* ---------- Nuevo estudio ---------- */
+function newStudy(){
+  const who = me(); if(!who) return go('profiles');
+  S.photos = [];
+  $('#app').innerHTML = `
+  <div class="card">
+    <h2 style="margin-top:0">📸 Nuevo tema</h2>
+    <div class="grid g2">
+      <div><label class="lb">Asignatura (opcional)</label><input type="text" id="subj" placeholder="Ej: Ciencias Naturales"></div>
+      <div><label class="lb">Curso</label><select id="crs">${COURSES.map(c=>`<option ${c===who.course?'selected':''}>${c}</option>`).join('')}</select></div>
+    </div>
+    <label class="lb">Fotos del tema (todas juntas, hasta ${MAXP} páginas)</label>
+    <div class="drop" id="drop" onclick="$('#file').click()">
+      <div style="font-size:40px">📷🗂️</div>
+      <b>Pulsa aquí o arrastra las fotos o un archivo ZIP</b>
+      <div class="muted">Puedes elegir varias fotos a la vez o un .zip con todas. Se estudian <b>juntas como un solo tema</b>.</div>
+    </div>
+    <input type="file" id="file" accept="image/*,.zip,application/zip,application/x-zip-compressed" multiple class="hide">
+    <div class="thumbs" id="thumbs"></div>
+    <div class="row" style="margin-top:20px">
+      <button class="btn y" id="goBtn" onclick="analyze()" disabled>✨ Crear resumen y test</button>
+      <button class="btn" onclick="go('home')">Cancelar</button>
+    </div>
+  </div>`;
+  const drop = $('#drop');
+  $('#file').onchange = e => addFiles(e.target.files);
+  drop.ondragover = e => { e.preventDefault(); drop.classList.add('over') };
+  drop.ondragleave = () => drop.classList.remove('over');
+  drop.ondrop = e => { e.preventDefault(); drop.classList.remove('over'); addFiles(e.dataTransfer.files) };
+}
+async function addFiles(files){
+  const list = [];
+  for(const f of files){
+    if(/\.zip$/i.test(f.name) || /zip/.test(f.type)){
+      try{
+        const zip = await JSZip.loadAsync(f);
+        const names = Object.keys(zip.files)
+          .filter(n => !zip.files[n].dir && /\.(jpe?g|png|webp|gif|bmp)$/i.test(n) && !/(^|\/)(__MACOSX|\.)/.test(n))
+          .sort((a,b) => a.localeCompare(b, 'es', {numeric:true}));
+        if(!names.length) toast('El ZIP no tiene fotos dentro');
+        for(const n of names){
+          const ext = n.split('.').pop().toLowerCase().replace('jpg','jpeg');
+          list.push(new File([await zip.files[n].async('blob')], n, {type:'image/'+ext}));
+        }
+      }catch(e){ toast('No se pudo abrir el ZIP') }
+    } else if(f.type.startsWith('image/')) list.push(f);
+  }
+  list.sort((a,b) => a.name.localeCompare(b.name, 'es', {numeric:true}));
+  for(const f of list){
+    if(S.photos.length >= MAXP){ toast(`Máximo ${MAXP} páginas por tema`); break }
+    S.photos.push(await shrink(f));
+  }
+  drawThumbs();
+}
+function drawThumbs(){
+  $('#thumbs').innerHTML = S.photos.map((p,i)=>`<div><img src="${p}"><button onclick="S.photos.splice(${i},1);drawThumbs()">×</button></div>`).join('');
+  $('#goBtn').disabled = !S.photos.length;
+}
+function shrink(file, max=1400){
+  return new Promise((res, rej) => {
+    const img = new Image(); const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const k = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas'); c.width = img.width*k; c.height = img.height*k;
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg', .8));
+    };
+    img.onerror = rej; img.src = url;
+  });
+}
+
+/* ---------- IA (Gemini) ---------- */
+function prompt(course, subj){
+  return `Eres un profesor muy cariñoso y claro. Te paso fotos de páginas de un libro de texto de un alumno de ${course}${subj?` (asignatura: ${subj})`:''}.
+Todas las fotos son páginas seguidas del MISMO tema: léelas TODAS, en orden, y trátalas como un único tema. Prepara material de estudio en español de España, adaptado a ese curso:
+- "titulo": título corto del tema.
+- "asignatura": la asignatura.
+- "resumen": explicación didáctica del tema en 3-6 párrafos cortos, con lenguaje sencillo y algún ejemplo cotidiano. Separa párrafos con \\n\\n.
+- "ideas_clave": 5-8 frases cortas con lo más importante para el examen.
+- "vocabulario": 4-10 palabras difíciles del tema con definición sencilla.
+- "preguntas": EXACTAMENTE 20 preguntas tipo test de autoescuela, con 3 opciones (A, B, C) y una sola correcta. Basadas SOLO en el contenido de las fotos. Reparte la respuesta correcta entre A, B y C. Opciones incorrectas creíbles pero claramente falsas para quien ha estudiado. "explicacion": 1-2 frases de por qué es la correcta.
+Si alguna foto no se lee bien, usa lo que sí se lea.`;
+}
+async function analyze(){
+  const course = $('#crs').value, subj = $('#subj').value.trim();
+  const photos = S.photos.slice();
+  $('#app').innerHTML = `<div class="card loading"><div class="spin">${owl(160)}</div><h2>Leyendo tu libro…</h2><p class="muted">El búho está preparando el resumen y las 20 preguntas. Tarda entre 20 y 60 segundos.</p></div>`;
+  try{
+    const { data: out, error } = await sb.functions.invoke('analizar', { body: { prompt: prompt(course, subj), images: photos.map(d => d.split(',')[1]) } });
+    if(error){
+      let msg = error.message;
+      try{ const j = await error.context.json(); msg = j.error || msg }catch(e){}
+      throw new Error(msg);
+    }
+    if(out?.error) throw new Error(out.error);
+    if(!out.preguntas?.length) throw new Error('No se pudieron crear preguntas. Prueba con fotos más claras.');
+    const L = {id:'l'+Date.now(), date:Date.now(), course, titulo: out.titulo||'Tema', asignatura: out.asignatura||subj, resumen: out.resumen||'', ideas_clave: out.ideas_clave||[], vocabulario: out.vocabulario||[], preguntas: out.preguntas.slice(0,20), intentos:[]};
+    const who = me(); who.lessons = who.lessons || []; who.lessons.unshift(L); saveProfiles();
+    go('lesson', L.id);
+  }catch(err){
+    $('#app').innerHTML = `<div class="card loading">${owl(140,'sad')}<h2>Vaya, algo ha fallado</h2><p>${esc(err.message)}</p><div class="row" style="justify-content:center"><button class="btn y" onclick="go('newStudy')">Volver a intentarlo</button><button class="btn" onclick="go('settings')">Ajustes</button></div></div>`;
+  }
+}
+
+/* ---------- Lección ---------- */
+function findLesson(id){
+  if(id === 'demo') return DEMO;
+  for(const p of S.profiles) for(const l of (p.lessons||[])) if(l.id===id) return l;
+}
+function lesson(id){
+  const L = findLesson(id); if(!L) return go('home'); S.lesson = L;
+  const best = (L.intentos||[]).reduce((m,x)=>Math.max(m,x.nota), -1);
+  $('#app').innerHTML = `
+  <div class="row" style="justify-content:space-between;margin-bottom:14px">
+    <div><span class="pill">${esc(L.asignatura||'Tema')} · ${esc(L.course||'')}</span><h1 style="margin:10px 0 0">${esc(L.titulo)}</h1></div>
+    <button class="btn y" onclick="startTest()">✅ Hacer el test (20)</button>
+  </div>
+  ${best>=0?`<p>Mejor nota: <span class="tag ${best>=PASS?'ok':'bad'}">${best}/20</span></p>`:''}
+  <div class="grid g2" style="align-items:start">
+    <div class="card"><h2 style="margin-top:0">🧠 Resumen</h2>${L.resumen.split(/\n\s*\n/).map(p=>`<p style="font-size:17px;line-height:1.55">${esc(p)}</p>`).join('')}</div>
+    <div class="grid">
+      <div class="card" style="background:#fffbea"><h2 style="margin-top:0">⭐ Ideas clave</h2><ul class="list">${L.ideas_clave.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div>
+      <div class="card"><h2 style="margin-top:0">📖 Palabras difíciles</h2><div class="vocab">${L.vocabulario.map(v=>`<div><b>${esc(v.palabra)}:</b> ${esc(v.definicion)}</div>`).join('')}</div></div>
+    </div>
+  </div>
+  <div class="row" style="margin-top:20px"><button class="btn y" onclick="startTest()">✅ Hacer el test</button><button class="btn" onclick="go('${id==='demo'?'home':'history'}')">← Volver</button></div>`;
+}
+
+/* ---------- Test ---------- */
+function startTest(){
+  const n = S.lesson.preguntas.length;
+  S.test = {answers: Array(n).fill(null), i:0};
+  go('test');
+}
+function test(){
+  const L = S.lesson, T = S.test, q = L.preguntas[T.i], n = L.preguntas.length;
+  const done = T.answers.filter(a=>a).length;
+  $('#app').innerHTML = `
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><b>${esc(L.titulo)}</b><span class="pill">Pregunta ${T.i+1} de ${n}</span></div>
+    <div class="bar" style="margin:12px 0"><i style="width:${done/n*100}%"></i></div>
+    <div class="dots">${L.preguntas.map((_,k)=>`<span class="${T.answers[k]?'a':''} ${k===T.i?'cur':''}" onclick="S.test.i=${k};go('test')">${k+1}</span>`).join('')}</div>
+    <h2 style="font-size:24px;line-height:1.3">${esc(q.pregunta)}</h2>
+    ${['A','B','C'].map(k=>`<button class="opt ${T.answers[T.i]===k?'sel':''}" onclick="answer('${k}')"><span class="k">${k}</span><span>${esc(q[k])}</span></button>`).join('')}
+    <div class="row" style="justify-content:space-between;margin-top:14px">
+      <button class="btn" onclick="move(-1)" ${T.i?'':'disabled'}>← Anterior</button>
+      ${done===n
+        ? `<button class="btn m" onclick="finish()">🏁 Corregir</button>`
+        : `<button class="btn" onclick="move(1)" ${T.i<n-1?'':'disabled'}>Siguiente →</button>`}
+    </div>
+    ${done<n && done>0 ? `<p class="muted" style="text-align:right">Te quedan ${n-done} por contestar. <a href="#" onclick="finish();return false">Corregir ya</a></p>`:''}
+  </div>`;
+}
+function answer(k){
+  const T = S.test; T.answers[T.i] = k;
+  const n = S.lesson.preguntas.length;
+  if(T.i < n-1){ setTimeout(()=>{ T.i++; go('test') }, 220); go('test') }
+  else go('test');
+}
+function move(d){ S.test.i += d; go('test') }
+function finish(){
+  const L = S.lesson, T = S.test;
+  const nota = L.preguntas.reduce((s,q,k)=>s+(T.answers[k]===q.correcta?1:0), 0);
+  T.nota = nota;
+  if(L.id !== 'demo'){ L.intentos = L.intentos||[]; L.intentos.push({date:Date.now(), nota}); saveProfiles() }
+  go('result');
+}
+function result(){
+  const L = S.lesson, T = S.test, ok = T.nota >= PASS;
+  $('#app').innerHTML = `
+  <div class="card" style="text-align:center;background:${ok?'#e3f8ee':'#fff1ef'}">
+    ${owl(150, ok?'happy':'sad')}
+    <div class="score">${T.nota}/20</div>
+    <h2>${ok ? '¡APROBADO! 🎉 ¡Eres un crack!' : `Casi… necesitas ${PASS} para aprobar. ¡Tú puedes!`}</h2>
+    <div class="row" style="justify-content:center">
+      <button class="btn y" onclick="startTest()">🔁 Repetir test</button>
+      <button class="btn" onclick="go('lesson','${L.id}')">🧠 Repasar el resumen</button>
+    </div>
+  </div>
+  <h2 style="margin-top:28px">Revisión</h2>
+  ${L.preguntas.map((q,k)=>{
+    const a = T.answers[k], good = a===q.correcta;
+    return `<div class="card" style="margin-bottom:14px;box-shadow:3px 3px 0 var(--ink)">
+      <b>${k+1}. ${esc(q.pregunta)}</b> <span class="tag ${good?'ok':'bad'}">${good?'✔ Bien':a?'✘ Mal':'Sin contestar'}</span>
+      <div style="margin-top:10px">${['A','B','C'].map(o=>`<div class="opt ${o===q.correcta?'ok':o===a?'bad':''}" style="cursor:default;box-shadow:none;padding:8px 10px;font-size:15px"><span class="k" style="width:28px;height:28px">${o}</span><span>${esc(q[o])}</span></div>`).join('')}</div>
+      <div class="muted">💡 ${esc(q.explicacion)}</div></div>`}).join('')}`;
+  if(ok) confetti();
+}
+
+/* ---------- Historial ---------- */
+function history(){
+  const who = me(); if(!who) return go('profiles');
+  const ls = who.lessons||[];
+  $('#app').innerHTML = `
+  <div class="row" style="justify-content:space-between"><h1>📚 Temas de ${esc(who.name)}</h1><button class="btn y" onclick="go('newStudy')">📸 Tema nuevo</button></div>
+  ${ls.length ? ls.map(l=>{
+    const last = (l.intentos||[]).slice(-1)[0];
+    return `<div class="hist"><div><b>${esc(l.titulo)}</b><div class="muted" style="font-size:14px">${esc(l.asignatura||'')} · ${new Date(l.date).toLocaleDateString('es-ES')} · ${(l.intentos||[]).length} intentos</div></div>
+      <div class="row">${last?`<span class="tag ${last.nota>=PASS?'ok':'bad'}">${last.nota}/20</span>`:''}
+      <button class="btn sm y" onclick="go('lesson','${l.id}')">Abrir</button>
+      <button class="btn sm" onclick="delLesson('${l.id}')">🗑️</button></div></div>`}).join('')
+  : `<div class="card loading">${owl(120)}<p>Todavía no hay temas. ¡Haz una foto a tu libro!</p></div>`}`;
+}
+function delLesson(id){
+  if(!confirm('¿Borrar este tema?')) return;
+  const who = me(); who.lessons = who.lessons.filter(l=>l.id!==id); saveProfiles(); go('history');
+}
+
+/* ---------- Ajustes ---------- */
+function settings(){
+  $('#app').innerHTML = `
+  <div class="card">
+    <h2 style="margin-top:0">⚙️ Mi cuenta</h2>
+    <p>Has entrado como <b>${esc(userName())}</b>.</p>
+    <div class="row"><button class="btn" onclick="logout()">🚪 Cerrar sesión</button><button class="btn" onclick="go('home')">Volver</button></div>
+    <hr style="border:0;border-top:2px dashed #c9d6d8;margin:24px 0">
+    <h3>Cambiar contraseña</h3>
+    <div class="grid g2"><input type="password" id="np" placeholder="Nueva contraseña (mín. 6)"><button class="btn y" onclick="changePass()">Cambiar</button></div>
+    <hr style="border:0;border-top:2px dashed #c9d6d8;margin:24px 0">
+    <h3>Copia de seguridad</h3>
+    <p class="muted">Tus perfiles y temas se guardan en la nube. También puedes descargarlos a un archivo.</p>
+    <div class="row">
+      <button class="btn" onclick="exportData()">⬇️ Exportar</button>
+      <button class="btn" onclick="$('#imp').click()">⬆️ Importar</button>
+      <input type="file" id="imp" accept=".json" class="hide" onchange="importData(this.files[0])">
+    </div>
+  </div>`;
+}
+async function changePass(){
+  const p = $('#np').value; if(p.length < 6) return toast('Mínimo 6 caracteres');
+  const { error } = await sb.auth.updateUser({ password: p });
+  toast(error ? 'Error: ' + error.message : 'Contraseña cambiada ✔');
+}
+async function logout(){ await sb.auth.signOut(); S.user = null; S.profiles = []; S.current = null; LS.set('current', null); go('auth') }
+function exportData(){
+  const blob = new Blob([JSON.stringify({profiles:S.profiles}, null, 1)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'estudiakids-copia.json'; a.click();
+}
+async function importData(f){
+  if(!f) return;
+  try{ const d = JSON.parse(await f.text()); if(!Array.isArray(d.profiles)) throw 0;
+    S.profiles = d.profiles; saveProfiles(); toast('Importado ✔'); go('profiles') }
+  catch(e){ toast('Ese archivo no es una copia de EstudiaKids') }
+}
+
+/* ---------- Ejemplo ---------- */
+const DEMO = {id:'demo', course:'4º Primaria', asignatura:'Ciencias Naturales', titulo:'Las plantas y la fotosíntesis', intentos:[],
+  resumen:'Las plantas son seres vivos que fabrican su propio alimento. Para hacerlo usan la luz del sol, el agua que toman por las raíces y un gas del aire llamado dióxido de carbono. A este proceso lo llamamos fotosíntesis.\n\nLa fotosíntesis ocurre sobre todo en las hojas, gracias a una sustancia verde llamada clorofila. La clorofila es como un pequeño panel solar que atrapa la luz.\n\nAl hacer la fotosíntesis, las plantas producen oxígeno, el gas que respiramos las personas y los animales. ¡Por eso los bosques son tan importantes!\n\nLas partes principales de una planta son la raíz (sujeta la planta y absorbe agua), el tallo (la sostiene y transporta la savia) y las hojas (donde se fabrica el alimento).',
+  ideas_clave:['Las plantas fabrican su propio alimento.','La fotosíntesis necesita luz, agua y dióxido de carbono.','Ocurre en las hojas gracias a la clorofila.','Las plantas liberan oxígeno.','Raíz, tallo y hojas son las partes principales.'],
+  vocabulario:[{palabra:'Fotosíntesis',definicion:'Proceso con el que las plantas fabrican su alimento usando la luz.'},{palabra:'Clorofila',definicion:'Sustancia verde de las hojas que atrapa la luz del sol.'},{palabra:'Savia',definicion:'Líquido que circula por la planta llevando agua y alimento.'},{palabra:'Dióxido de carbono',definicion:'Gas del aire que las plantas usan para la fotosíntesis.'}],
+  preguntas:[
+   ['¿Qué necesitan las plantas para hacer la fotosíntesis?','Luz, agua y dióxido de carbono','Solo tierra','Leche y azúcar','A','La fotosíntesis usa la luz del sol, el agua y el dióxido de carbono del aire.'],
+   ['¿Dónde ocurre principalmente la fotosíntesis?','En las raíces','En las hojas','En las flores','B','Las hojas tienen clorofila, que atrapa la luz.'],
+   ['¿Cómo se llama la sustancia verde de las hojas?','Savia','Polen','Clorofila','C','La clorofila da el color verde y atrapa la luz.'],
+   ['¿Qué gas liberan las plantas?','Oxígeno','Humo','Helio','A','Al hacer la fotosíntesis las plantas liberan oxígeno.'],
+   ['¿Qué parte de la planta absorbe el agua?','Las hojas','La raíz','El fruto','B','La raíz absorbe agua del suelo y sujeta la planta.'],
+   ['¿Para qué sirve el tallo?','Para sostener la planta y transportar la savia','Para hacer ruido','Para respirar bajo el agua','A','El tallo sostiene la planta y lleva la savia.'],
+   ['Las plantas son seres…','Inertes','Vivos','Minerales','B','Las plantas nacen, crecen, se alimentan y se reproducen.'],
+   ['¿Qué es la savia?','Una hoja seca','Un líquido que lleva agua y alimento','Un tipo de flor','B','La savia circula por la planta transportando sustancias.'],
+   ['La clorofila funciona como…','Un panel solar','Un paraguas','Un imán','A','Atrapa la energía de la luz, como un panel solar.'],
+   ['¿Por qué son importantes los bosques?','Porque hacen sombra a los coches','Porque producen oxígeno','Porque son de color verde','B','Las plantas producen el oxígeno que respiramos.'],
+   ['¿De dónde toma la planta el dióxido de carbono?','Del aire','Del agua de lluvia solamente','De las piedras','A','El dióxido de carbono es un gas que está en el aire.'],
+   ['Las plantas fabrican…','Su propio alimento','Plástico','Electricidad para casa','A','Por eso se dice que las plantas son autótrofas.'],
+   ['¿Qué pasaría si una planta no recibe luz?','Crecería más rápido','No podría hacer la fotosíntesis','Se volvería azul','B','Sin luz no hay fotosíntesis.'],
+   ['¿Qué parte sujeta la planta al suelo?','El tallo','La hoja','La raíz','C','La raíz ancla la planta en la tierra.'],
+   ['¿Qué respiramos las personas y los animales?','Oxígeno','Clorofila','Savia','A','Necesitamos oxígeno para vivir.'],
+   ['La fotosíntesis ocurre gracias a la energía de…','La luna','El sol','El viento','B','La luz del sol da la energía necesaria.'],
+   ['¿Cuál NO es una parte principal de la planta?','Raíz','Tallo','Ala','C','Las plantas no tienen alas.'],
+   ['El agua llega a las hojas a través del…','Tallo','Aire','Pétalo','A','El tallo transporta el agua desde la raíz.'],
+   ['¿De qué color es la clorofila?','Roja','Verde','Negra','B','Por eso las hojas son verdes.'],
+   ['¿Cómo se llama el proceso de fabricar alimento con luz?','Digestión','Fotosíntesis','Evaporación','B','Foto = luz; síntesis = fabricar.']
+  ].map(([pregunta,A,B,C,correcta,explicacion])=>({pregunta,A,B,C,correcta,explicacion}))
+};
+function openDemo(){ go('lesson','demo') }
+
+/* ---------- Confeti ---------- */
+function confetti(){
+  const c = $('#confetti'), x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
+  const P = Array.from({length:140}, () => ({x:Math.random()*c.width, y:-20-Math.random()*c.height*.5, v:2+Math.random()*4, r:Math.random()*6.28, s:6+Math.random()*6, col:COLORS[Math.random()*COLORS.length|0]}));
+  let t = 0; (function f(){ x.clearRect(0,0,c.width,c.height);
+    P.forEach(p=>{ p.y+=p.v; p.r+=.1; x.save(); x.translate(p.x+Math.sin(p.r)*8,p.y); x.rotate(p.r); x.fillStyle=p.col; x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); x.restore() });
+    if(++t < 200) requestAnimationFrame(f); else x.clearRect(0,0,c.width,c.height) })();
+}
+
+/* ---------- Entrar / Registrarse ---------- */
+let authMode = 'login';
+function auth(){
+  const reg = authMode === 'register';
+  $('#app').innerHTML = `
+  <div style="max-width:420px;margin:30px auto">
+    <div style="text-align:center">${owl(130)}</div>
+    <div class="card">
+      <h1 style="margin:0 0 4px">${reg ? '¡Crea tu cuenta!' : '¡Hola otra vez!'}</h1>
+      <p class="muted" style="margin-top:0">${reg ? 'Una cuenta para la familia; dentro creas un perfil por niño.' : 'Entra para seguir aprendiendo.'}</p>
+      <form onsubmit="doAuth(event)">
+        <label class="lb">👤 Usuario</label>
+        <input type="text" id="au" autocomplete="username" required minlength="3" maxlength="30" placeholder="Ej: familiasanchez">
+        <label class="lb">🔒 Contraseña</label>
+        <input type="password" id="ap" autocomplete="${reg?'new-password':'current-password'}" required minlength="6" placeholder="Mínimo 6 caracteres">
+        ${reg ? `<label class="lb">🔒 Repite la contraseña</label><input type="password" id="ap2" autocomplete="new-password" required minlength="6">` : ''}
+        <button class="btn y" style="width:100%;margin-top:18px" id="abtn">${reg ? 'Crear cuenta' : 'Entrar'}</button>
+      </form>
+      <p style="text-align:center;margin-bottom:0">${reg
+        ? '¿Ya tienes cuenta? <a href="#" onclick="authMode=\'login\';auth();return false">Entra</a>'
+        : '¿Aún no tienes cuenta? <a href="#" onclick="authMode=\'register\';auth();return false">Regístrate</a>'}</p>
+    </div>
+  </div>`;
+}
+async function doAuth(e){
+  e.preventDefault();
+  const u = $('#au').value.trim().toLowerCase(), p = $('#ap').value;
+  if(!/^[a-z0-9._-]{3,30}$/.test(u)) return toast('El usuario solo puede tener letras, números, punto, guion y guion bajo (sin espacios ni tildes)');
+  const email = u + USER_DOMAIN, btn = $('#abtn'); btn.disabled = true;
+  let res;
+  if(authMode === 'register'){
+    if(p !== $('#ap2').value){ btn.disabled = false; return toast('Las contraseñas no coinciden') }
+    res = await sb.auth.signUp({ email, password: p });
+    if(!res.error && !res.data.session) res = await sb.auth.signInWithPassword({ email, password: p });
+  } else res = await sb.auth.signInWithPassword({ email, password: p });
+  btn.disabled = false;
+  if(res.error){
+    const m = res.error.message;
+    return toast(/invalid login/i.test(m) ? 'Usuario o contraseña incorrectos' : /already registered/i.test(m) ? 'Ese usuario ya existe' : 'Error: ' + m, 5000);
+  }
+  await startSession(res.data.session);
+}
+async function startSession(session){
+  S.user = session.user; await loadData();
+  if(!me()) S.current = null;
+  go(me() ? 'home' : 'profiles');
+}
+(async () => {
+  $('#app').innerHTML = `<div class="card loading"><div class="spin">${owl(120)}</div><p>Cargando…</p></div>`;
+  const { data } = await sb.auth.getSession();
+  if(data.session) startSession(data.session); else go('auth');
+})();
+</script>
+</body>
+</html>

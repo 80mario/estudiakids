@@ -1,15 +1,23 @@
-# Mantiene despierto el servidor de EstudiaKids (Supabase gratis se pausa tras 7 días sin uso)
+# Mantiene despierto el servidor de EstudiaKids.
+# Supabase gratis pausa el proyecto tras 7 dias sin actividad real,
+# asi que cada dia escribimos la hora del "latido" en la base de datos.
 name: Mantener despierto Supabase
 on:
   schedule:
-    - cron: '17 6 */3 * *'
+    - cron: '17 6 * * *'
   workflow_dispatch:
 jobs:
-  ping:
+  latido:
     runs-on: ubuntu-latest
     steps:
-      - name: Toque a la base de datos
+      - name: Latido en la base de datos
         run: |
-          curl -sS -o /dev/null -w "%{http_code}\n" \
-            "https://iweksgjjmrtrjslgsxbg.supabase.co/rest/v1/ek_datos?select=user_id&limit=1" \
+          curl -fsS -X POST \
+            "https://iweksgjjmrtrjslgsxbg.supabase.co/rest/v1/rpc/latido" \
+            -H "apikey: sb_publishable_2LaMRzrETWeZyncrT5k5jw_bcv8zsvY" \
+            -H "Content-Type: application/json" -d '{}'
+          echo
+      - name: Comprobar login
+        run: |
+          curl -fsS "https://iweksgjjmrtrjslgsxbg.supabase.co/auth/v1/health" \
             -H "apikey: sb_publishable_2LaMRzrETWeZyncrT5k5jw_bcv8zsvY"
